@@ -135,7 +135,7 @@ export const useGame = () => {
         break;
       default:
     }
-  }, [dispatch, gameState, myShips, myShipsShot, opponentShips, opponentShipsShot]);
+  }, [dispatch, gameState]);
 
 
   // while we selectiong ships shipTilesState equals 0, when we press configm it becomes 1

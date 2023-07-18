@@ -39,13 +39,3 @@ export interface IMyState {
     shot: Coordinate[],
     active: boolean
 }
-
-export enum gameStateEnum {
-    WaitingForPlayer = 0,
-    PickingTiles = 1,
-    WaitingForOpponentTiles = 2,
-    PlayersTurnToShoot = 3,
-    OpponentsTurnToShoot = 4,
-    PlayerWon = 5,
-    PlayerLost = 6
-}

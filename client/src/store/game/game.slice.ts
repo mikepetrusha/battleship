@@ -2,11 +2,11 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import { checkIfLstIncludesCoordinate, checkIfSameCoordinate, getCurrentTime, isWinner, makeNewMessages } from '../../utils/utils';
 import { MSG_ENTER_NEW_GAME } from '../../constants';
 import { emitShot } from '../../hooks/useGame';
-import { Coordinate, IInitialState, IMyShips, gameStateEnum } from '../../types/types'
+import { Coordinate, IInitialState, IMyShips } from '../../types/types'
 
 
 const initialState: IInitialState = {
-    gameState: gameStateEnum.WaitingForPlayer,
+    gameState: 0,
     shipTilesState: 0,
     messages: [{ time: getCurrentTime(), message: "Welcome to Battleship!" }],
     myShips: [],
@@ -25,7 +25,7 @@ export const gameSlice = createSlice({
     reducers: {
         new_Opponent: (state, action: PayloadAction<string>) => {
             const opponent = action.payload;
-            const newGameState = opponent ? gameStateEnum.PickingTiles : gameStateEnum.WaitingForPlayer
+            const newGameState = opponent ? 1 : 0
 
             return state = {
                 ...state,
@@ -104,13 +104,13 @@ export const gameSlice = createSlice({
         complete_Selection: (state) => {
             return {
                 ...state,
-                gameState: gameStateEnum.WaitingForOpponentTiles
+                gameState: 2
             }
         },
 
         set_Opponent_Ships: (state, action: PayloadAction<IMyShips[]>) => {
             const {gameState} = state
-            const newGameState = gameState === gameStateEnum.WaitingForOpponentTiles ? gameStateEnum.PlayersTurnToShoot : gameState
+            const newGameState = gameState === 2 ? 3 : gameState
     
             return {
                 ...state,
@@ -122,7 +122,7 @@ export const gameSlice = createSlice({
         opponents_Turn: (state) => {
             return {
                 ...state,
-                gameState: gameStateEnum.OpponentsTurnToShoot
+                gameState: 4
             }
         },
 
@@ -135,7 +135,7 @@ export const gameSlice = createSlice({
 
             const hasWon = isWinner(opponentShips, newOpponentShipsShot)
             const msgType = hasWon ? 'end' : 'shot'
-            const newGameState = hasWon ? gameStateEnum.PlayerWon : gameStateEnum.OpponentsTurnToShoot
+            const newGameState = hasWon ? 5 : 4
             emitShot(msgType, action.payload)
 
             return {
@@ -152,14 +152,14 @@ export const gameSlice = createSlice({
             return {
                 ...state,
                 myShipsShot: newMyShipsShot,
-                gameState: gameStateEnum.PlayersTurnToShoot
+                gameState: 3
             }
         },
 
         end: (state) => {
             return {
                 ...state,
-                gameState: gameStateEnum.PlayerLost
+                gameState: 6
             }
         }
     }

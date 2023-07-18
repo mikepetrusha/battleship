@@ -138,7 +138,6 @@ export const useGame = () => {
   }, [dispatch, gameState]);
 
 
-  // while we selectiong ships shipTilesState equals 0, when we press configm it becomes 1
   useEffect(() => {
     switch (shipTilesState) {
       case 0:
